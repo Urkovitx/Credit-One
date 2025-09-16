@@ -1,1 +1,77 @@
 Projecte per a predir l'impagament del crèdit bancari en un cas real de banca Taiwanesa.
+
+Anàlisi Predictiva d'Impagament de Targetes de Crèdit
+Aquest repositori conté una anàlisi completa i un model de Machine Learning per predir la probabilitat d'impagament de clients de targetes de crèdit, basat en el dataset del concurs de Kaggle "Default of Credit Card Clients".
+
+1. Objectiu del Projecte
+L'objectiu principal és desenvolupar un model de classificació robust que identifiqui de manera proactiva els clients amb un alt risc de no complir amb les seves obligacions de pagament el mes següent. L'anàlisi no només se centra en la precisió del model, sinó també en la seva aplicabilitat pràctica en un entorn de negoci, proposant accions estratègiques basades en els resultats.
+
+2. Dataset
+El dataset utilitzat prové de la competició de Kaggle i conté informació demogràfica i de comportament financer de 30,000 clients d'un banc a Taiwan. Les variables clau inclouen:
+
+Dades Demogràfiques: Sexe, nivell educatiu, estat civil i edat.
+
+Dades Financeres: Límit de crèdit (LIMIT_BAL).
+
+Historial de Pagaments (PAY_): Estat dels pagaments dels últims 6 mesos.
+
+Imports de Factura (BILL_AMT_): Deute pendent en els últims 6 mesos.
+
+Imports Pagats (PAY_AMT_): Quantitat pagada en els últims 6 mesos.
+
+Variable Objectiu (default payment next month): 1 si el client fa impagament, 0 si no.
+
+3. Metodologia i Workflow
+El projecte segueix un flux de treball estructurat per garantir la qualitat i la rellevància dels resultats:
+
+Anàlisi Exploratòria de Dades (EDA): Anàlisi de les distribucions de les variables, identificació de valors atípics (outliers) i estudi de les correlacions. S'ha detectat un fort desbalanceig a la variable objectiu (només un 22% de casos d'impagament).
+
+Enginyeria de Característiques (Feature Engineering): Creació de noves variables per capturar patrons de comportament més complexos, com ara TOTAL_MONTHS_DELAYED (total de mesos de retard) i IS_CONSISTENT_PAYER (consistència en els pagaments). Aquestes noves característiques han demostrat ser altament predictives.
+
+Gestió del Desbalanceig de Classes: A causa del baix percentatge de casos d'impagament, s'ha aplicat la tècnica SMOTE (Synthetic Minority Over-sampling Technique) per reequilibrar el dataset d'entrenament. Això permet que el model aprengui de manera més efectiva els patrons de la classe minoritària.
+
+Modelatge i Optimització:
+
+S'ha seleccionat un model Random Forest Classifier per la seva robustesa i capacitat per gestionar relacions no lineals.
+
+S'ha realitzat una optimització d'hiperparàmetres mitjançant GridSearchCV amb validació creuada estratificada.
+
+La mètrica d'optimització escollida ha estat el F1-Score, ideal per a problemes amb classes desbalancejades.
+
+Ajust Estratègic del Llindar (Threshold Tuning): Aquest ha estat un dels punts clau de l'anàlisi. En lloc d'utilitzar el llindar de decisió per defecte (0.5), s'ha calculat un llindar òptim (0.3824) per maximitzar el F1-Score. Aquesta tècnica permet alinear el model amb l'objectiu de negoci de maximitzar la detecció de clients de risc (Recall).
+
+4. Resultats Clau
+El model final demostra una bona capacitat predictiva i, més important, una gran utilitat pràctica:
+
+Rendiment General: El model aconsegueix una àrea sota la corba AUC de 0.78, indicant una bona capacitat per discriminar entre les dues classes.
+
+Impacte del Llindar Optimitzat: L'ajust del llindar de decisió ha permès augmentar el Recall per a la classe d'impagament (1) d'un 51% a un 63%. Això representa una millora relativa del 23.5% en la nostra capacitat per detectar clients que realment faran un impagament.
+
+5. Recomanacions de Negoci
+A partir dels resultats, es proposa un Pla d'Acció Estratègic per gestionar els clients de risc, segmentant-los segons la probabilitat d'impagament predita pel model i aplicant intervencions personalitzades per a cada nivell de risc (moderat, alt i molt alt).
+
+A més, es recomana enriquir el model en futures iteracions amb dades d'ingressos del client per millorar encara més la seva capacitat predictiva.
+
+6. Com Executar el Projecte
+Requisits: Assegura't de tenir Python 3 i les següents llibreries instal·lades:
+
+pip install pandas numpy sqlalchemy scikit-learn imbalanced-learn matplotlib seaborn jupyter
+
+Base de Dades: El projecte utilitza una base de dades SQLite anomenada credit_one_dades.sqlite. Aquest fitxer ha d'estar a la mateixa carpeta que el notebook per poder carregar les dades.
+
+Execució: Obre i executa el notebook RFbestHP.ipynb en un entorn Jupyter per replicar tot el procés d'anàlisi i modelatge.
+
+7. Tecnologies Utilitzades
+Llenguatge: Python 3
+
+Llibreries Principals:
+
+Pandas i NumPy per a la manipulació de dades.
+
+Scikit-learn per al modelatge i l'avaluació.
+
+Imbalanced-learn per a la tècnica SMOTE.
+
+Matplotlib i Seaborn per a la visualització de dades.
+
+SQLAlchemy per a la connexió amb la base de dades.
